@@ -9,9 +9,9 @@ import com.abhijeet.mvvmsample.model.localDB.entity.Employee
 class RegistrationFragmentRepo : BaseRepository() {
 
     suspend fun register(employee: Employee): DataResponse<Employee> {
-        var result :DataResponse<Employee>
-        AppDatabase.invoke(context).databaseServiceDao().insertAll(employee)
+        var result :DataResponse<Employee>?=null
 
-        return result
+
+        return result!!
     }
 }

@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.abhijeet.mvvmsample.model.localDB.entity.Employee
 
-class RegistrationFragmentViewModel : ViewModel() {
+class RegistrationFragmentViewModel() : ViewModel() {
     private val TAG = RegistrationFragmentViewModel::class.java.simpleName
     val employee = MutableLiveData<Employee>()
 

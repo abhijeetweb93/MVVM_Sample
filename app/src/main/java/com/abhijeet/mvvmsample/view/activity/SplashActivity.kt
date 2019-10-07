@@ -38,6 +38,8 @@ class SplashActivity : BaseActivity() {
             //            val i = Intent(this, LoginRegisterActivity::class.java)
             val i = Intent(this, it::class.java)
             startActivity(i)
+
+            finish()
         })
 
 
