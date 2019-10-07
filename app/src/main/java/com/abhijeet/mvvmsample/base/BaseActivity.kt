@@ -7,21 +7,21 @@ import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.annotation.LayoutRes
 import android.os.Bundle
+import android.transition.Explode
 import android.view.ViewGroup
 import androidx.annotation.Nullable
 import com.abhijeet.mvvmsample.R
 import com.abhijeet.mvvmsample.databinding.ActivityBaseBinding
 import com.abhijeet.samplemvp.logger.log
-import androidx.navigation.ui.NavigationUI
-import androidx.navigation.Navigation
-import androidx.navigation.NavController
 import com.google.android.material.navigation.NavigationView
 import androidx.core.view.GravityCompat
 import android.view.MenuItem
 import androidx.drawerlayout.widget.DrawerLayout
 import android.view.View
 import androidx.appcompat.app.ActionBarDrawerToggle
-import com.abhijeet.samplemvp.logger.showAlert
+import android.transition.Fade
+import android.transition.Slide
+import android.view.Window
 
 
 abstract class BaseActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
@@ -30,27 +30,47 @@ abstract class BaseActivity : AppCompatActivity(), NavigationView.OnNavigationIt
     protected var baseBinding: ActivityBaseBinding? = null
     protected var mDrawerToggle: ActionBarDrawerToggle? = null
 
-    var isShowDrawerToggle:Boolean=false
-    var isEnableDrawer :Boolean=false
+    var isShowDrawerToggle: Boolean = true
+    var isEnableDrawer: Boolean = true
 
 
     override fun onCreate(@Nullable savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        with(window) {
+            requestFeature(Window.FEATURE_CONTENT_TRANSITIONS)
+            // set an exit transition
+            exitTransition = Explode()
+        }
+
         baseBinding = DataBindingUtil.setContentView(this, R.layout.activity_base)
         log(TAG, "onCreate() execute")
 
-        setupNavigation()
     }
 
+    private fun setupWindowAnimations() {
+        val fade = Fade()
+        fade.setDuration(2000)
+        window.enterTransition = fade
+
+        val slide = Slide()
+        slide.setDuration(2000)
+        window.returnTransition = slide
+    }
 
     protected fun <T : ViewDataBinding> putContentView(@LayoutRes resId: Int): T {
         val viewGroup: ViewGroup = baseBinding?.layoutContainer!!
+        setupNavigation()
+        setupWindowAnimations()
         return DataBindingUtil.inflate(layoutInflater, resId, viewGroup, true)
     }
 
-    protected fun <T : ViewDataBinding> putContentView(@LayoutRes resId: Int,isShowDrawerToggle: Boolean,isEnableDrawer: Boolean): T {
-        this.isEnableDrawer=isEnableDrawer
-        this.isShowDrawerToggle=isShowDrawerToggle
+    protected fun <T : ViewDataBinding> putContentView(
+        @LayoutRes resId: Int, isShowDrawerToggle: Boolean,
+        isEnableDrawer: Boolean
+    ): T {
+        this.isEnableDrawer = isEnableDrawer
+        this.isShowDrawerToggle = isShowDrawerToggle
         return putContentView(resId)
     }
 
@@ -68,19 +88,19 @@ abstract class BaseActivity : AppCompatActivity(), NavigationView.OnNavigationIt
         baseBinding?.progressBar?.visibility = INVISIBLE
     }
 
-
-    private fun drawerVisibility(isVisible:Boolean){
-
-    }
-
-
     private fun setupNavigation() {
 
         setSupportActionBar(baseBinding?.toolbarBase)
         supportActionBar!!.setDisplayHomeAsUpEnabled(isShowDrawerToggle)
         supportActionBar!!.setDisplayShowHomeEnabled(isShowDrawerToggle)
 
-        mDrawerToggle = object : ActionBarDrawerToggle(this, baseBinding?.drawerLayoutBase, baseBinding?.toolbarBase, R.string.navigation_drawer_open, R.string.navigation_drawer_close) {
+        mDrawerToggle = object : ActionBarDrawerToggle(
+            this,
+            baseBinding?.drawerLayoutBase,
+            baseBinding?.toolbarBase,
+            R.string.navigation_drawer_open,
+            R.string.navigation_drawer_close
+        ) {
 
             override fun onDrawerSlide(drawerView: View, slideOffset: Float) {
                 super.onDrawerSlide(drawerView, slideOffset)
@@ -103,17 +123,9 @@ abstract class BaseActivity : AppCompatActivity(), NavigationView.OnNavigationIt
 
         mDrawerToggle?.isDrawerIndicatorEnabled = isShowDrawerToggle
 
-        baseBinding?.drawerLayoutBase?.isEnabled=isEnableDrawer
-        baseBinding?.drawerLayoutBase?.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
-    }
+        baseBinding?.drawerLayoutBase?.isEnabled = isEnableDrawer
 
-
-
-    fun mDrawerToggle(isEnable:Boolean){
-        supportActionBar!!.setDisplayHomeAsUpEnabled(isEnable)
-        supportActionBar!!.setDisplayShowHomeEnabled(isEnable)
-
-
+        baseBinding?.drawerLayoutBase?.setDrawerLockMode(if (isEnableDrawer) DrawerLayout.LOCK_MODE_UNLOCKED else DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
     }
 
     override fun onNavigationItemSelected(menuItem: MenuItem): Boolean {
@@ -123,23 +135,20 @@ abstract class BaseActivity : AppCompatActivity(), NavigationView.OnNavigationIt
         baseBinding?.drawerLayoutBase?.closeDrawers()
 
         val id = menuItem.getItemId()
-        log(TAG,"Android ")
+        log(TAG, "Android ")
 
         when (id) {
 //            R.id.first -> navController?.navigate(R.id.firstFragment)
 //            R.id.second -> navController?.navigate(R.id.secondFragment)
 
 
-            R.id.first->{
-                log(TAG,"Android ")
+            R.id.first -> {
+                log(TAG, "Android ")
             }
 
         }
         return true
     }
-
-
-
 
 
     override fun onBackPressed() {

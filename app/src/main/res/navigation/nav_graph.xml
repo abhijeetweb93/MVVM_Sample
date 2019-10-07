@@ -3,18 +3,23 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/firstFragment">
+    app:startDestination="@id/loginFragment">
 
     <fragment
-        android:id="@+id/firstFragment"
-        android:name="com.abhijeet.mvvmsample.view.fragment.FirstFragment"
-        android:label="First Fragment"
-        tools:layout="@layout/fragment_first" />
-    <fragment
-        android:id="@+id/secondFragment"
-        android:name="com.abhijeet.mvvmsample.view.fragment.FirstFragment"
-        android:label="Second Fragment"
-        tools:layout="@layout/fragment_first" />
+        android:id="@+id/loginFragment"
+        android:name="com.abhijeet.mvvmsample.view.fragment.LoginFragment"
+        android:label="Login"
+        tools:layout="@layout/fragment_login" >
+        <action
+            android:id="@+id/action_loginFragment_to_registrationFragment"
+            app:destination="@id/registrationFragment" />
+    </fragment>
 
+
+    <fragment
+        android:id="@+id/registrationFragment"
+        android:name="com.abhijeet.mvvmsample.view.fragment.RegistrationFragment"
+        android:label="Registration"
+        tools:layout="@layout/fragment_registration" />
 
 </navigation>
