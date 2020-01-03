@@ -2,6 +2,7 @@ package com.abhijeet.mvvmsample.view_model
 
 import android.view.View
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
@@ -15,6 +16,8 @@ class LoginFragmentViewModel : ViewModel() {
 
     var loginInfo = MutableLiveData<LoginInfo>()
 
+    val observer = Observer<LoginInfo> {
+    }
 
 
     fun onClickLogInButton(view: View) {
@@ -27,6 +30,7 @@ class LoginFragmentViewModel : ViewModel() {
 
     override fun onCleared() {
         super.onCleared()
+        loginInfo.removeObserver(observer)
         log(TAG, "onCleared() called!")
     }
 }

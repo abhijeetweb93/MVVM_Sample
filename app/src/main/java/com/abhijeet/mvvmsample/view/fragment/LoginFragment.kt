@@ -25,7 +25,7 @@ class LoginFragment : BaseFragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle? ): View? {
         val binding:FragmentLoginBinding= DataBindingUtil.inflate( inflater, R.layout.fragment_login, container, false)
-        viewModel = ViewModelProviders.of(this).get(LoginFragmentViewModel::class.java!!)
+        viewModel = ViewModelProviders.of(this).get(LoginFragmentViewModel::class.java)
         binding.viewModel=viewModel
         return binding.root
     }
