@@ -20,4 +20,6 @@ open class Employee(
     @ColumnInfo(name = "joined_date") var joined_date: OffsetDateTime? = null,
     @ColumnInfo(name = "created") var created: String,
     @ColumnInfo(name = "password") var password: String
-)
+){
+    constructor() : this(-1,"","","","","","","",null,null,"","")
+}

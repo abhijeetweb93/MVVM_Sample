@@ -4,6 +4,8 @@ apply plugin: 'kotlin-android'
 
 apply plugin: 'kotlin-android-extensions'
 
+apply plugin: 'kotlin-kapt'
+
 android {
     compileSdkVersion 29
     buildToolsVersion "29.0.0"
@@ -36,29 +38,35 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test:runner:1.2.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+
+    // Material Design
     implementation 'com.google.android.material:material:1.0.0'
 
+    // Joda Date Time Formatter
     implementation 'net.danlew:android.joda:2.9.9.1'
+
+    // GSON
+    implementation 'com.google.code.gson:gson:2.8.5'
 
     // ViewModel and LiveData
     implementation "androidx.lifecycle:lifecycle-extensions:2.1.0"
-    // alternatively - just ViewModel
-    //implementation "androidx.lifecycle:lifecycle-viewmodel:2.1.0" // For Kotlin use lifecycle-viewmodel-ktx
-    // alternatively - just LiveData
-    //implementation "androidx.lifecycle:lifecycle-livedata:2.1.0"
-    // alternatively - Lifecycles only (no ViewModel or LiveData). Some UI
-    //     AndroidX libraries use this lightweight import for Lifecycle
     implementation "androidx.lifecycle:lifecycle-runtime:2.1.0"
-
-    annotationProcessor "androidx.lifecycle:lifecycle-compiler:2.1.0"
-    // For Kotlin use kapt instead of annotationProcessor
-    // optional - ReactiveStreams support for LiveData
     implementation "androidx.lifecycle:lifecycle-reactivestreams:2.1.0"
-    // For Kotlin use lifecycle-reactivestreams-ktx
-    // optional - Test helpers for LiveData
-    testImplementation "androidx.arch.core:core-testing:2.1.0"
+    annotationProcessor "androidx.lifecycle:lifecycle-compiler:2.1.0"
+
+
+    // Room Database
+    implementation 'androidx.room:room-runtime:2.2.3'
+    annotationProcessor 'androidx.room:room-compiler:2.2.3'
+    //kapt 'android.arch.persistence.room:compiler:1.1.1'
+
+    // For Kotlin use lifecycle-reactivestreams-ktx. optional - Test helpers for LiveData
     implementation 'androidx.navigation:navigation-fragment-ktx:2.1.0'
     implementation 'androidx.navigation:navigation-ui-ktx:2.1.0'
-    implementation 'androidx.room:room-runtime:2.1.0'
-    annotationProcessor 'androidx.room:room-compiler:2.1.0'
+    testImplementation "androidx.arch.core:core-testing:2.1.0"
+
+
+
+
+
 }
