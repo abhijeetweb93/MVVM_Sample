@@ -1,27 +1,53 @@
 package com.abhijeet.mvvmsample.view_model
 
+import android.content.Intent
 import android.view.View
+import androidx.core.content.ContextCompat.startActivity
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
+import com.abhijeet.mvvmsample.App
 import com.abhijeet.mvvmsample.R
 import com.abhijeet.mvvmsample.model.data_model.LoginInfo
+import com.abhijeet.mvvmsample.model.localDB.entity.Employee
+import com.abhijeet.mvvmsample.view.activity.HomeActivity
 import com.abhijeet.samplemvp.logger.log
 
 
-class LoginFragmentViewModel : ViewModel() {
+class LoginFragmentViewModel() : ViewModel() {
     private val TAG = LoginFragmentViewModel::class.java.simpleName
-
-    var loginInfo = MutableLiveData<LoginInfo>()
 
     val observer = Observer<LoginInfo> {
     }
 
 
+    var loginInfoMutable = MutableLiveData<LoginInfo>()
+
+    fun getLoginInfo(): LiveData<LoginInfo> {
+        return loginInfoMutable
+    }
+
+    var loginInfoData: LoginInfo = LoginInfo()
+
     fun onClickLogInButton(view: View) {
         log(TAG, "Log In Clicked")
+        val thread = Thread {
+            //fetch Records
+            loginInfoMutable.postValue(loginInfoData)
+
+            val isValid: Boolean? = App.db?.databaseServiceDao()?.isUserValid(loginInfoData.name, loginInfoData.password)
+
+            log(TAG, "User Valid: $isValid")
+            if (isValid!!) {
+                val i = Intent(view.context, HomeActivity::class.java)
+                view.context.startActivity(i)
+            }
+
+        }
+        thread.start()
     }
 
     fun onClickTvLinkSignup(view: View) {
@@ -30,7 +56,7 @@ class LoginFragmentViewModel : ViewModel() {
 
     override fun onCleared() {
         super.onCleared()
-        loginInfo.removeObserver(observer)
+        loginInfoMutable.removeObserver(observer)
         log(TAG, "onCleared() called!")
     }
 }

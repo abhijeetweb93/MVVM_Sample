@@ -1,40 +1,53 @@
 package com.abhijeet.mvvmsample.view_model
 
-import android.util.JsonReader
+import android.app.Activity
+import android.os.AsyncTask
 import android.view.View
+import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.navigation.findNavController
-import androidx.room.Room
+import com.abhijeet.mvvmsample.App
 import com.abhijeet.mvvmsample.R
 import com.abhijeet.mvvmsample.model.localDB.AppDatabase
 import com.abhijeet.mvvmsample.model.localDB.entity.Employee
 import com.abhijeet.samplemvp.logger.log
 import com.google.gson.Gson
-import org.json.JSONObject
+import java.lang.ref.WeakReference
+
 
 class RegistrationFragmentViewModel() : ViewModel() {
     private val TAG = RegistrationFragmentViewModel::class.java.simpleName
-    val employee = MutableLiveData<Employee>()
+    val employeeMutable = MutableLiveData<Employee>()
 
-    var employeeData:Employee=Employee()
+    var employeeData: Employee = Employee()
 
     fun getEmployee(): LiveData<Employee> {
-        return employee
+        return employeeMutable
     }
 
 
     fun onClickCreateAccountButton(view: View) {
-        employee.postValue(employeeData)
-        log(TAG, "Create Accousdasnt Clicked"+Gson().toJson(employee.value))
+        employeeMutable.postValue(employeeData)
+        log(TAG, "Create Accousdasnt Clicked" + Gson().toJson(employeeMutable.value))
 
-
-        //val db = AppDatabase.invoke(view.context)
+        val thread = Thread {
+            //val db = AppDatabase.getDatabase(view.context)
+            App.db?.databaseServiceDao()?.insertAll(employeeData)
+            //fetch Records
+            App.db?.databaseServiceDao()?.getAll()?.forEach()
+            {
+                log("Fetch Records", "Id:  : ${it.name} Name:  : ${it.email_id}")
+            }
+        }
+        thread.start()
     }
 
     fun onClickAllReadyMemberLink(view: View) {
-        view.findNavController().popBackStack(R.id.loginFragment,false)
+        view.findNavController().popBackStack(R.id.loginFragment, false)
 //        view.findNavController().navigate(R.id.loginFragment)
     }
+
+
 }

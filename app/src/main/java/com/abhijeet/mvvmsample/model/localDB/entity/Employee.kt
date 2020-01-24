@@ -3,12 +3,12 @@ package com.abhijeet.mvvmsample.model.localDB.entity
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import java.time.OffsetDateTime
+import java.sql.Date
 
 @Entity(tableName = "employee")
 open class Employee(
     @PrimaryKey(autoGenerate = true)
-    var id: Int,
+    var id: Int?,
     @ColumnInfo(name = "name") var name: String,
     @ColumnInfo(name = "email_id") var email_id: String,
     @ColumnInfo(name = "contact_no") var contact_no: String,
@@ -16,10 +16,10 @@ open class Employee(
     @ColumnInfo(name = "address") var address: String,
     @ColumnInfo(name = "city") var city: String,
     @ColumnInfo(name = "state") var state: String,
-    @ColumnInfo(name = "country") var country: OffsetDateTime? = null,
-    @ColumnInfo(name = "joined_date") var joined_date: OffsetDateTime? = null,
+    @ColumnInfo(name = "country") var country: Date? = null,
+    @ColumnInfo(name = "joined_date") var joined_date: Date? = null,
     @ColumnInfo(name = "created") var created: String,
     @ColumnInfo(name = "password") var password: String
 ){
-    constructor() : this(-1,"","","","","","","",null,null,"","")
+    constructor() : this(null,"","","","","","","",null,null,"","")
 }

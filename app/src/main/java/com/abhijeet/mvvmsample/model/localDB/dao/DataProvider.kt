@@ -1,4 +1,4 @@
-package com.abhijeet.mvvmsample.model.localDB
+package com.abhijeet.mvvmsample.model.localDB.dao
 
 import androidx.room.*
 import com.abhijeet.mvvmsample.model.localDB.entity.Employee
@@ -10,7 +10,7 @@ interface DataProvider {
     fun getAll(): List<Employee>
 
     @Query("SELECT * FROM employee WHERE email_id LIKE :emailId")
-    fun findByTitle(emailId: String): Employee
+    fun findByEmail(emailId: String): Employee
 
     @Insert
     fun insertAll(vararg employee: Employee)
@@ -20,4 +20,7 @@ interface DataProvider {
 
     @Update
     fun updateEmploye(vararg employees: Employee)
+
+    @Query("SELECT * FROM employee WHERE email_id = :emailId and password=:password")
+    fun isUserValid(emailId: String, password: String): Boolean
 }
