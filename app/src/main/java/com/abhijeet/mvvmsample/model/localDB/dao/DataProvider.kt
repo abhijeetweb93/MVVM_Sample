@@ -2,6 +2,7 @@ package com.abhijeet.mvvmsample.model.localDB.dao
 
 import androidx.room.*
 import com.abhijeet.mvvmsample.model.localDB.entity.Employee
+import com.abhijeet.mvvmsample.model.localDB.entity.Notes
 
 @Dao
 interface DataProvider {
@@ -22,5 +23,11 @@ interface DataProvider {
     fun updateEmploye(vararg employees: Employee)
 
     @Query("SELECT * FROM employee WHERE email_id = :emailId and password=:password")
-    fun isUserValid(emailId: String, password: String): Boolean
+    fun isUserValid(emailId: String, password: String): Employee
+
+    @Query("SELECT * FROM notes")
+    fun getAllNotes(): List<Notes>
+
+    @Insert
+    fun insertNotes(vararg employee: Notes)
 }

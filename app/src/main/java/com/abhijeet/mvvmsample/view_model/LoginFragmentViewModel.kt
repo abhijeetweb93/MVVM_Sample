@@ -15,6 +15,7 @@ import com.abhijeet.mvvmsample.model.data_model.LoginInfo
 import com.abhijeet.mvvmsample.model.localDB.entity.Employee
 import com.abhijeet.mvvmsample.view.activity.HomeActivity
 import com.abhijeet.samplemvp.logger.log
+import com.google.gson.Gson
 
 
 class LoginFragmentViewModel() : ViewModel() {
@@ -34,16 +35,14 @@ class LoginFragmentViewModel() : ViewModel() {
 
     fun onClickLogInButton(view: View) {
         log(TAG, "Log In Clicked")
+
         val thread = Thread {
             //fetch Records
-            loginInfoMutable.postValue(loginInfoData)
+            val isValid: Employee? = App.db?.databaseServiceDao()?.isUserValid(loginInfoData.name, loginInfoData.password)
+            log(TAG, "User Info: ${Gson().toJson(isValid)}")
 
-            val isValid: Boolean? = App.db?.databaseServiceDao()?.isUserValid(loginInfoData.name, loginInfoData.password)
-
-            log(TAG, "User Valid: $isValid")
-            if (isValid!!) {
-                val i = Intent(view.context, HomeActivity::class.java)
-                view.context.startActivity(i)
+            if (isValid!=null&&isValid.id!! >0) {
+                loginInfoMutable.postValue(loginInfoData)
             }
 
         }

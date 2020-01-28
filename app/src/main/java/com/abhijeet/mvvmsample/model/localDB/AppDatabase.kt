@@ -8,12 +8,13 @@ import androidx.room.TypeConverters
 import com.abhijeet.mvvmsample.app_const.DATABASE_NAME
 import com.abhijeet.mvvmsample.model.localDB.dao.DataProvider
 import com.abhijeet.mvvmsample.model.localDB.entity.Employee
+import com.abhijeet.mvvmsample.model.localDB.entity.Notes
 
 //@Database(
 //    entities = [Employee::class, Employee::class],
 //    version = 1
 //)
-@Database(entities = arrayOf(Employee::class), version = 1, exportSchema = false)
+@Database(entities = arrayOf(Employee::class,Notes::class), version = 1, exportSchema = false)
 @TypeConverters(Converters::class)
 public abstract class AppDatabase  : RoomDatabase() {
 

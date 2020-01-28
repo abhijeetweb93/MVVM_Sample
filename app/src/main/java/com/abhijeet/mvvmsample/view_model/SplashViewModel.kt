@@ -10,7 +10,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.LiveData
 import android.icu.lang.UCharacter.GraphemeClusterBreak.T
 import android.os.CountDownTimer
+import com.abhijeet.mvvmsample.App
 import com.abhijeet.mvvmsample.base.BaseActivity
+import com.abhijeet.mvvmsample.view.activity.HomeActivity
 import java.util.*
 import kotlin.reflect.KClass
 
@@ -46,7 +48,13 @@ class SplashViewModel : ViewModel() {
 
             override fun onFinish() {
                 showCount.value=0
-                navigationActivity.value=LoginRegisterActivity()
+
+                if(App().getCredentials().isUserLoggedIn){
+                    navigationActivity.value=HomeActivity()
+                }else{
+                    navigationActivity.value=LoginRegisterActivity()
+                }
+
                 log(TAG, "CountDownTimer onFinish ")
             }
         }

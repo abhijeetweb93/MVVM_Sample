@@ -3,8 +3,6 @@ package com.abhijeet.mvvmsample.view.activity
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import android.view.Window
-import android.view.WindowManager
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.abhijeet.mvvmsample.R
@@ -20,10 +18,10 @@ class SplashActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         //window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN)
-        binding = putContentView(R.layout.activity_splash,false,false)
+        binding = putContentView(R.layout.activity_splash, false, false)
 
         //Hide App Bar Layout
-        baseBinding?.appBarLayoutBase?.visibility= View.GONE
+        baseBinding?.appBarLayoutBase?.visibility = View.GONE
 
         binding?.setLifecycleOwner(this)
         viewModel = ViewModelProviders.of(this).get(SplashViewModel::class.java!!)
@@ -31,15 +29,17 @@ class SplashActivity : BaseActivity() {
         viewModel.getNavigation()
 
         viewModel.getCount().observe(this, Observer {
-            binding?.tv?.text=it.toString()
+            binding?.tv?.text = it.toString()
         })
 
         viewModel.getNavigationTargetClass()?.observe(this, Observer {
-            //            val i = Intent(this, LoginRegisterActivity::class.java)
             val i = Intent(this, it::class.java)
+            i.addFlags(
+                Intent.FLAG_ACTIVITY_CLEAR_TOP or
+                        Intent.FLAG_ACTIVITY_CLEAR_TASK or
+                        Intent.FLAG_ACTIVITY_NEW_TASK
+            )
             startActivity(i)
-
-            finish()
         })
 
 

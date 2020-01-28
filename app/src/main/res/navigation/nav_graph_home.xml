@@ -9,9 +9,15 @@
         android:id="@+id/homeListFragment"
         android:name="com.abhijeet.mvvmsample.view.fragment.HomeNotesListFragment"
         android:label="Home"
-        tools:layout="@layout/fragment_home_list" >
+        tools:layout="@layout/fragment_home_list">
         <action
             android:id="@+id/action_homeListFragment"
             app:destination="@id/homeListFragment" />
     </fragment>
+
+    <fragment
+        android:id="@+id/homeAddNotes"
+        android:name="com.abhijeet.mvvmsample.view.fragment.AddNotesFragment"
+        android:label="Add Note"
+        tools:layout="@layout/fragment_add_notes" />
 </navigation>
