@@ -7,9 +7,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.abhijeet.mvvmsample.R
 import com.abhijeet.mvvmsample.databinding.ListItemsNotesBinding
 import com.abhijeet.mvvmsample.model.localDB.entity.Notes
+import com.abhijeet.mvvmsample.view_model.HomeNotesListFragmentViewModel
 
 
-open class HomeNotesListRVAdapter : RecyclerView.Adapter<HomeNotesListRVAdapter.MyViewHolder>() {
+open class HomeNotesListRVAdapter(var homeNotesListFragmentViewModel: HomeNotesListFragmentViewModel) : RecyclerView.Adapter<HomeNotesListRVAdapter.MyViewHolder>() {
 
     private var employees: List<Notes>? = null
 
@@ -21,7 +22,7 @@ open class HomeNotesListRVAdapter : RecyclerView.Adapter<HomeNotesListRVAdapter.
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): MyViewHolder {
         val employeeListItemBinding: ListItemsNotesBinding = DataBindingUtil.inflate(LayoutInflater.from(viewGroup.context), R.layout.list_items_notes,viewGroup,false)
-        return MyViewHolder(employeeListItemBinding)
+        return MyViewHolder(employeeListItemBinding,homeNotesListFragmentViewModel)
     }
 
     override fun getItemCount(): Int {
@@ -33,9 +34,10 @@ open class HomeNotesListRVAdapter : RecyclerView.Adapter<HomeNotesListRVAdapter.
         holder.employeeListItemBinding.notes = currentStudent
     }
 
-    class MyViewHolder(listItemBinding: ListItemsNotesBinding) : RecyclerView.ViewHolder(listItemBinding.getRoot()) {
+    class MyViewHolder(listItemBinding: ListItemsNotesBinding,homeNotesListFragmentViewModel: HomeNotesListFragmentViewModel) : RecyclerView.ViewHolder(listItemBinding.getRoot()) {
         val employeeListItemBinding: ListItemsNotesBinding
         init {
+            listItemBinding.viewModel=homeNotesListFragmentViewModel
             employeeListItemBinding = listItemBinding
         }
     }

@@ -1,7 +1,5 @@
 package com.abhijeet.mvvmsample.view_model
 
-import android.content.Intent
-import android.os.Handler
 import android.view.View
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
@@ -9,27 +7,32 @@ import androidx.lifecycle.ViewModel
 import androidx.navigation.findNavController
 import com.abhijeet.mvvmsample.App
 import com.abhijeet.mvvmsample.R
-import com.abhijeet.mvvmsample.model.data_model.LoginInfo
 import com.abhijeet.mvvmsample.model.localDB.entity.Notes
-import com.abhijeet.mvvmsample.view.activity.HomeActivity
 import com.abhijeet.mvvmsample.view.adapter.HomeNotesListRVAdapter
 import com.abhijeet.samplemvp.logger.log
 
+
 class HomeNotesListFragmentViewModel : ViewModel() {
     private val TAG = HomeNotesListFragmentViewModel::class.java.simpleName
-    val observer = Observer<List<Notes>> {
+    private val observer = Observer<List<Notes>> {
     }
 
     var loginInfoMutable = MutableLiveData<List<Notes>>()
 
+    private var selected = MutableLiveData<Notes>()
+
     var loginInfoData: List<Notes> = mutableListOf()
 
     val adapter: HomeNotesListRVAdapter by lazy {
-        HomeNotesListRVAdapter()
+        HomeNotesListRVAdapter(this)
     }
 
     fun getNotes(): MutableLiveData<List<Notes>> {
         return loginInfoMutable
+    }
+
+    fun getSelected(): MutableLiveData<Notes> {
+        return selected
     }
 
     fun init() {
@@ -52,17 +55,19 @@ class HomeNotesListFragmentViewModel : ViewModel() {
 //        }, 3000)
 
 
-
     }
 
     fun getMyAdapter(): HomeNotesListRVAdapter {
         return adapter
     }
-
+    fun onItemClick(index: Notes?) {
+        selected.setValue(index!!)
+    }
 
     override fun onCleared() {
         super.onCleared()
         loginInfoMutable.removeObserver(observer)
+
         log(TAG, "onCleared() called!")
     }
 

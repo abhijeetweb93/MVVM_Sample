@@ -28,6 +28,15 @@ interface DataProvider {
     @Query("SELECT * FROM notes")
     fun getAllNotes(): List<Notes>
 
-    @Insert
-    fun insertNotes(vararg employee: Notes)
+    @Query("SELECT * FROM notes WHERE id = :id")
+    fun getNotes(id:Long): Notes
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertNotes(note: Notes):Long
+
+    @Update
+    fun updateNotes(note: Notes):Int
+
+
+
 }

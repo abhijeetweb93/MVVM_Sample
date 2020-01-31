@@ -8,6 +8,10 @@
         <variable
             name="notes"
             type="com.abhijeet.mvvmsample.model.localDB.entity.Notes" />
+
+        <variable
+            name="viewModel"
+            type="com.abhijeet.mvvmsample.view_model.HomeNotesListFragmentViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -16,6 +20,7 @@
         android:orientation="vertical"
         android:layout_margin="5dp"
         android:padding="5dp"
+        android:onClick="@{() -> viewModel.onItemClick(notes)}"
         android:background="@color/cardview_shadow_end_color">
 
         <TextView

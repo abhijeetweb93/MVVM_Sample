@@ -1,18 +1,23 @@
 package com.abhijeet.mvvmsample.view.activity
 
+import android.content.Intent
 import android.os.Bundle
+import android.view.Menu
 import android.view.MenuItem
-import androidx.activity.OnBackPressedCallback
-import androidx.activity.addCallback
+import android.view.View
+import android.widget.TextView
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
-import androidx.navigation.findNavController
 import androidx.navigation.ui.NavigationUI
+import com.abhijeet.mvvmsample.App
 import com.abhijeet.mvvmsample.R
 import com.abhijeet.mvvmsample.base.BaseActivity
 import com.abhijeet.mvvmsample.databinding.ActivityHomeBinding
+import com.abhijeet.mvvmsample.model.data_model.AppCredentials
+import com.abhijeet.mvvmsample.model.localDB.entity.Employee
 import com.abhijeet.samplemvp.logger.log
 import com.google.android.material.navigation.NavigationView
+
 
 class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedListener {
     private val TAG = HomeActivity::class.java.simpleName
@@ -34,6 +39,10 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
 
         NavigationUI.setupWithNavController(baseBinding?.navigationView!!, navController!!)
 
+
+        getDrawerText()
+
+        baseBinding?.navigationView!!.setNavigationItemSelectedListener(this)
 //        toolbarBase.setNavigationIcon(android.R.drawable.arrow_down_float)
 //        toolbarBase.setNavigationOnClickListener {
 //            onBackPressed()
@@ -61,11 +70,37 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
 //            R.id.second -> navController?.navigate(R.id.secondFragment)
 
 
-            R.id.first -> {
-                log(TAG, "Android ")
+            R.id.menuLoginLogout -> {
+                var appCredentials: AppCredentials = App().getCredentials()
+                appCredentials.isUserLoggedIn = false
+                appCredentials.employee= Employee()
+
+                App().setCredentials(appCredentials)
+
+                val i = Intent(this, LoginRegisterActivity::class.java)
+                i.addFlags(
+                    Intent.FLAG_ACTIVITY_CLEAR_TOP or
+                            Intent.FLAG_ACTIVITY_CLEAR_TASK or
+                            Intent.FLAG_ACTIVITY_NEW_TASK
+                )
+                startActivity(i)
             }
 
         }
         return true
+    }
+
+
+    fun getDrawerText() {
+
+        val headerView: View = baseBinding?.navigationView!!.getHeaderView(0)
+        (headerView.findViewById(R.id.tvUserName) as TextView).text =
+            App().getCredentials().employee.name
+        (headerView.findViewById(R.id.tvEmail) as TextView).text =
+            App().getCredentials().employee.email_id
+
+        val menu: Menu = baseBinding?.navigationView!!.getMenu()
+
+        //menu.findItem(R.id.menuLoginLogout).seton
     }
 }

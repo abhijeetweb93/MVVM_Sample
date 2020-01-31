@@ -21,28 +21,27 @@ import com.google.gson.Gson
 class LoginFragmentViewModel() : ViewModel() {
     private val TAG = LoginFragmentViewModel::class.java.simpleName
 
-    val observer = Observer<LoginInfo> {
+    val observer = Observer<Employee> {
     }
 
 
-    var loginInfoMutable = MutableLiveData<LoginInfo>()
+    var loginInfoMutable = MutableLiveData<Employee>()
 
-    fun getLoginInfo(): LiveData<LoginInfo> {
+    fun getLoginInfo(): LiveData<Employee> {
         return loginInfoMutable
     }
 
-    var loginInfoData: LoginInfo = LoginInfo()
+    var loginInfoData: Employee = Employee()
 
     fun onClickLogInButton(view: View) {
         log(TAG, "Log In Clicked")
 
         val thread = Thread {
             //fetch Records
-            val isValid: Employee? = App.db?.databaseServiceDao()?.isUserValid(loginInfoData.name, loginInfoData.password)
+            val isValid: Employee? = App.db?.databaseServiceDao()?.isUserValid(loginInfoData.email_id, loginInfoData.password)
             log(TAG, "User Info: ${Gson().toJson(isValid)}")
-
             if (isValid!=null&&isValid.id!! >0) {
-                loginInfoMutable.postValue(loginInfoData)
+                loginInfoMutable.postValue(isValid)
             }
 
         }

@@ -8,11 +8,11 @@ import java.sql.Date
 @Entity(tableName = "notes")
 open class Notes(
     @PrimaryKey(autoGenerate = true)
-    var id: Int?,
+    var id: Long?,
     @ColumnInfo(name = "title") var title: String,
     @ColumnInfo(name = "notes_text") var notes_text: String,
-    @ColumnInfo(name = "created") var created: Date? = null,
-    @ColumnInfo(name = "updated") var updated: Date? = null
+    @ColumnInfo(name = "created") var created: Date? = Date(System.currentTimeMillis()),
+    @ColumnInfo(name = "updated") var updated: Date? = Date(System.currentTimeMillis())
 
 ) {
     constructor() : this(null, "", "", null, null)

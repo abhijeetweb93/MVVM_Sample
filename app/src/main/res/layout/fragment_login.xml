@@ -58,7 +58,7 @@
                             android:layout_height="wrap_content"
                             android:hint="Email"
                             android:inputType="textEmailAddress"
-                            android:text="@={viewModel.loginInfoData.name}"/>
+                            android:text="@={viewModel.loginInfoData.email_id}"/>
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <!-- Password Label -->
