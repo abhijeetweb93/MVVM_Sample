@@ -42,7 +42,7 @@ class LoginFragment : BaseFragment() {
 
             var appCredentials: AppCredentials = App().getCredentials()
             appCredentials.isUserLoggedIn = true
-            appCredentials.userName = it.name
+            appCredentials.employee=it
 
             App().setCredentials(appCredentials)
 

@@ -4,16 +4,17 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import com.abhijeet.mvvmsample.R
 import com.abhijeet.mvvmsample.base.BaseFragment
 import com.abhijeet.mvvmsample.databinding.FragmentHomeListBinding
 import com.abhijeet.mvvmsample.view_model.HomeNotesListFragmentViewModel
 import com.abhijeet.samplemvp.logger.log
+import com.google.gson.Gson
 
 
 class HomeNotesListFragment : BaseFragment() {
@@ -49,12 +50,12 @@ class HomeNotesListFragment : BaseFragment() {
         })
 
 
+        viewModel.getSelected().observe(this, Observer {
+            log(TAG,"observe list ${Gson().toJson(it)}")
+            val bundle = Bundle()
+            bundle.putSerializable("NOTES", Gson().toJson(it))
+            activity?.findNavController(R.id.nav_host_fragment_home)?.navigate(R.id.homeAddNotes,bundle)
+        })
 
-//        viewModel.getSelected().observe(this, Observer<Any?> { dogBreed ->
-//            if (dogBreed != null) {
-//                Toast.makeText(this@DogBreedsActivity,"You selected a " + dogBreed.getBreed(),      Toast.LENGTH_SHORT
-//                ).show()
-//            }
-//        })
     }
 }
