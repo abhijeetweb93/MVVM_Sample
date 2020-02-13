@@ -26,17 +26,15 @@ class AddNotesFragment : BaseFragment(){
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle? ): View? {
         val binding:FragmentAddNotesBinding= DataBindingUtil.inflate( inflater, R.layout.fragment_add_notes, container, false)
         viewModel = ViewModelProviders.of(this).get(AddNotesFragmentViewModel::class.java)
-
-        if (this.arguments != null&& this.arguments?.getSerializable("NOTES")!=null) {
-            val myInt = this.arguments?.getSerializable("NOTES").toString()
-            viewModel.notesData=Gson().fromJson(myInt,Notes::class.java)
-        }
-
         binding.viewModel=viewModel
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        if (this.arguments != null&& this.arguments?.getSerializable("NOTES")!=null) {
+            val myInt = this.arguments?.getSerializable("NOTES").toString()
+            viewModel.notesData=Gson().fromJson(myInt,Notes::class.java)
+        }
         super.onViewCreated(view, savedInstanceState)
     }
 
@@ -45,12 +43,6 @@ class AddNotesFragment : BaseFragment(){
     }
 
     override fun initView() {
-        val onBackPressedCallback = object : OnBackPressedCallback(true) {
-            override fun handleOnBackPressed() {
-                log(TAG,"Call back")
-            }
-        }
-        requireActivity().getOnBackPressedDispatcher().addCallback(this, onBackPressedCallback)
 
     }
 
