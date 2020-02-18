@@ -158,4 +158,10 @@ abstract class BaseActivity : AppCompatActivity(), NavigationView.OnNavigationIt
             super.onBackPressed()
         }
     }
+
+    fun enableDisableDrawer(mode: Int) {
+        if (baseBinding?.drawerLayoutBase != null) {
+            baseBinding?.drawerLayoutBase!!.setDrawerLockMode(mode)
+        }
+    }
 }
