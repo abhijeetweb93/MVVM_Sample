@@ -6,6 +6,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.TextView
+import androidx.core.view.GravityCompat
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.navigation.ui.NavigationUI
@@ -17,6 +18,7 @@ import com.abhijeet.mvvmsample.model.data_model.AppCredentials
 import com.abhijeet.mvvmsample.model.localDB.entity.Employee
 import com.abhijeet.samplemvp.logger.log
 import com.google.android.material.navigation.NavigationView
+import kotlinx.android.synthetic.main.activity_base.*
 
 
 class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedListener {
@@ -31,28 +33,25 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
 
         navController = Navigation.findNavController(this, R.id.nav_host_fragment_home)
 
-        NavigationUI.setupActionBarWithNavController(
-            this,
-            navController!!,
-            baseBinding?.drawerLayoutBase
-        )
+        NavigationUI.setupActionBarWithNavController(this, navController!!, baseBinding?.drawerLayoutBase)
 
         NavigationUI.setupWithNavController(baseBinding?.navigationView!!, navController!!)
 
+        baseBinding?.navigationView!!.setNavigationItemSelectedListener(this)
+
+        setSupportActionBar(toolbarBase)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         getDrawerText()
-
-        baseBinding?.navigationView!!.setNavigationItemSelectedListener(this)
-//        toolbarBase.setNavigationIcon(android.R.drawable.arrow_down_float)
-//        toolbarBase.setNavigationOnClickListener {
-//            onBackPressed()
-//        }
     }
 
     override fun onBackPressed() {
-        if (navController?.popBackStack()!!) {
+
+        if (baseBinding?.drawerLayoutBase?.isDrawerOpen(GravityCompat.START)!!) {
+            baseBinding?.drawerLayoutBase?.closeDrawer(GravityCompat.START)
         } else
             super.onBackPressed()
+
     }
 
 
@@ -73,7 +72,7 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
             R.id.menuLoginLogout -> {
                 var appCredentials: AppCredentials = App().getCredentials()
                 appCredentials.isUserLoggedIn = false
-                appCredentials.employee= Employee()
+                appCredentials.employee = Employee()
 
                 App().setCredentials(appCredentials)
 
@@ -90,14 +89,27 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         return true
     }
 
+    override fun onOptionsItemSelected(menuItem: MenuItem): Boolean {
+        log(TAG, " " + menuItem.itemId + "     " + (menuItem.itemId == android.R.id.home))
+        when {
+            navController?.currentDestination?.id == R.id.homeListFragment -> {
+                log(TAG, " Pressed Home Button in HomeNotesListFragment" )
+                baseBinding?.drawerLayoutBase?.openDrawer(GravityCompat.START)
+            }
+            navController?.popBackStack()!! -> {
+                log(TAG, " Pressed Home Button in an other fragment" )
+            }
+            else -> super.onBackPressed()
+        }
 
-    fun getDrawerText() {
+        return super.onOptionsItemSelected(menuItem)
+    }
+
+    private fun getDrawerText() {
 
         val headerView: View = baseBinding?.navigationView!!.getHeaderView(0)
-        (headerView.findViewById(R.id.tvUserName) as TextView).text =
-            App().getCredentials().employee.name
-        (headerView.findViewById(R.id.tvEmail) as TextView).text =
-            App().getCredentials().employee.email_id
+        (headerView.findViewById(R.id.tvUserName) as TextView).text = App().getCredentials().employee.name
+        (headerView.findViewById(R.id.tvEmail) as TextView).text = App().getCredentials().employee.email_id
 
         val menu: Menu = baseBinding?.navigationView!!.getMenu()
 
